@@ -104,10 +104,21 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
+    <linearGradient id="tile3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#07070a"/></linearGradient>
+    <linearGradient id="chD" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="80">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#9ca5b2"/><stop offset=".5" stop-color="#f1f5fa"/><stop offset=".56" stop-color="#4a515c"/><stop offset="1" stop-color="#d3dae4"/>
+    </linearGradient>
+    <linearGradient id="chB" gradientUnits="userSpaceOnUse" x1="0" y1="6" x2="0" y2="94">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#86bdea"/><stop offset=".5" stop-color="#eaf5ff"/><stop offset=".56" stop-color="#2f5f93"/><stop offset="1" stop-color="#c4e3ff"/>
+    </linearGradient>
     <symbol id="logo" viewBox="0 0 100 100">
-      <rect width="100" height="100" rx="26" fill="#0d0d10"/>
-      <path d="M29 23h19a27 27 0 0 1 0 54H29z" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round"/>
-      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="#9dd2ff" stroke="#0d0d10" stroke-width="4" stroke-linejoin="miter" paint-order="stroke"/>
+      <rect width="100" height="100" rx="26" fill="url(#tile3)"/>
+      <path d="M29 23h19a27 27 0 0 1 0 54H29z" fill="none" stroke="#262a31" stroke-width="9" stroke-linejoin="round" transform="translate(2.2 3.4)"/>
+      <path d="M29 23h19a27 27 0 0 1 0 54H29z" fill="none" stroke="url(#chD)" stroke-width="9" stroke-linejoin="round"/>
+      <path d="M29 23h19a27 27 0 0 1 0 54H29z" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.5" stroke-linejoin="round" transform="translate(-2.5 -2.5)"/>
+      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="#0b0b0e" stroke="#0b0b0e" stroke-width="7" stroke-linejoin="miter"/>
+      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="#1b3a60" transform="translate(2 3)"/>
+      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="url(#chB)" stroke="#fff" stroke-opacity=".7" stroke-width=".8" stroke-linejoin="miter"/>
     </symbol>
   </defs>
 </svg>
