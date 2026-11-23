@@ -111,15 +111,19 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     <linearGradient id="chB" gradientUnits="userSpaceOnUse" x1="0" y1="6" x2="0" y2="94">
       <stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#86bdea"/><stop offset=".5" stop-color="#eaf5ff"/><stop offset=".56" stop-color="#2f5f93"/><stop offset="1" stop-color="#c4e3ff"/>
     </linearGradient>
+    <clipPath id="dclip"><path clip-rule="evenodd" d="M23.5 18.5H57.86L78.5 39.14V60.86L57.86 81.5H23.5ZM32.5 27.5H54.14L69.5 42.86V57.14L54.14 72.5H32.5Z"/></clipPath>
+    <linearGradient id="chS" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#b3bbc8"/><stop offset=".5" stop-color="#f4f7fb"/><stop offset=".56" stop-color="#555d69"/><stop offset="1" stop-color="#e0e6ee"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9dd2ff"/><stop offset="1" stop-color="#bba2ff"/></linearGradient>
     <symbol id="logo" viewBox="0 0 100 100">
       <g transform="translate(7 0) skewX(-8)">
-        <path d="M23.5 18.5H57.86L78.5 39.14V60.86L57.86 81.5H23.5ZM32.5 27.5H54.14L69.5 42.86V57.14L54.14 72.5H32.5Z" fill="#262a31" fill-rule="evenodd" transform="translate(2.2 3.4)"/>
-        <path d="M23.5 18.5H57.86L78.5 39.14V60.86L57.86 81.5H23.5ZM32.5 27.5H54.14L69.5 42.86V57.14L54.14 72.5H32.5Z" fill="url(#chD)" fill-rule="evenodd"/>
-        <path d="M23.5 19H57.7L78 39.3" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.2" stroke-linejoin="miter"/>
+        <g clip-path="url(#dclip)" fill="#f5f5f7">
+          <rect x="15" y="18.5" width="70" height="10.2"/><rect x="15" y="31.7" width="70" height="10.2"/><rect x="15" y="44.9" width="70" height="10.2"/><rect x="15" y="58.1" width="70" height="10.2"/><rect x="15" y="71.3" width="70" height="10.2"/>
+        </g>
       </g>
       <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="#000" stroke="#000" stroke-width="7" stroke-linejoin="miter"/>
-      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="#1b3a60" transform="translate(2 3)"/>
-      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="url(#chB)" stroke="#fff" stroke-opacity=".7" stroke-width=".8" stroke-linejoin="miter"/>
+      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="url(#bolt)"/>
     </symbol>
   </defs>
 </svg>
