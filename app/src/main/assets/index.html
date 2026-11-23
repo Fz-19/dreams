@@ -329,15 +329,6 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   function seeded(){try{return localStorage.getItem('dreams-seeded')==='1'}catch(e){return false}}
   DB.open().then(function(){return DB.all()}).then(function(all){
     items=all;
-    if(!items.length&&!seeded()){
-      items=[
-        {id:'ex-casa',title:'Casa no lago',date:'2026-10-14',example:true},
-        {id:'ex-studio',title:'Estúdio criativo em Tóquio',date:'2026-09-17',example:true},
-        {id:'ex-loja',title:'Primeira loja online',date:'2026-08-29',example:true}
-      ];
-      items.forEach(function(d){DB.put(d)});
-      try{localStorage.setItem('dreams-seeded','1')}catch(e){}
-    }
     render();
   });
 })();
