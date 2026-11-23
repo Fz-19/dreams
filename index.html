@@ -14,15 +14,15 @@
 <style>:root{padding-top:env(safe-area-inset-top,0px)}body{margin:0}</style>
 <title>DREAMS</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=Unbounded:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: preto liso, uma faixa "Adicionar DREAMS" no topo e, abaixo, a grade "DREAMS adicionados". */
 :root{
   --bg:#000; --surface:#101012; --surface-2:#18181b; --line:#232327;
-  --fg:#f5f5f7; --muted:#8c8c96; --accent:#9dd2ff; --danger:#ff7a8a;
-  --display:'Unbounded','Arial Black',system-ui,sans-serif;
-  --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --mono:'Space Mono',ui-monospace,Menlo,monospace;
+  --fg:#f5f5f7; --muted:#8e8e93; --accent:#0a84ff; --danger:#ff453a;
+  --display:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',system-ui,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif;
+  --mono:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -40,7 +40,7 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid va
 .top{display:flex;align-items:center;justify-content:space-between;padding-top:14px;min-height:60px}
 .brand{display:flex;align-items:center;gap:10px}
 .brand svg{width:44px;height:44px;display:block}
-.brand span{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.14em}
+.brand span{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.01em}
 .icobtn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center}
 .icobtn:active{background:var(--surface-2)}
 .icobtn svg{width:22px;height:22px;stroke:var(--fg);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -49,13 +49,14 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid va
 .search input{width:100%;height:46px;border-radius:14px;background:var(--surface);border:0;color:var(--fg);padding:0 16px;font:inherit;font-size:16px}
 .addrow{display:flex;align-items:center;gap:16px;width:100%;margin-top:22px;padding:22px;border-radius:28px;background:var(--surface);text-align:left;transition:background .2s}
 .addrow:active{background:var(--surface-2)}
-.plus{width:52px;height:52px;border-radius:50%;background:var(--fg);display:grid;place-items:center;flex:none}
-.plus svg{width:24px;height:24px;stroke:#000;stroke-width:2.2;stroke-linecap:round;fill:none}
-.addrow b{display:block;font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em}
+.plus{width:52px;height:52px;border-radius:50%;background:var(--accent);display:grid;place-items:center;flex:none}
+.chev{margin-left:auto;width:20px;height:20px;flex:none;stroke:#48484a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.plus svg{width:24px;height:24px;stroke:#fff;stroke-width:2.2;stroke-linecap:round;fill:none}
+.addrow b{display:block;font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.015em}
 .addrow small{display:block;color:var(--muted);font-size:14px;margin-top:2px}
 .head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:40px 0 16px}
-.head h2{margin:0;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
-.head span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.head h2{margin:0;font-family:var(--display);font-weight:700;font-size:28px;letter-spacing:-.025em}
+.head span{font-size:17px;color:var(--muted);font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:22px 14px}
 .card{display:block;text-align:left;min-width:0}
 .cover{position:relative;aspect-ratio:1/1;max-width:100%;border-radius:24px;overflow:hidden;background:var(--surface);transition:transform .2s ease}
@@ -63,7 +64,7 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid va
 .cover img{width:100%;height:100%;object-fit:cover;display:block}
 .gen{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(150deg,hsl(var(--h) 22% 15%),hsl(var(--h) 20% 6%))}
 .gen svg{width:58%;height:58%;display:block}
-.tag{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:99px;background:rgba(0,0,0,.6);color:var(--fg)}
+.tag{position:absolute;top:10px;left:10px;font-size:10px;letter-spacing:.08em;padding:3px 8px;border-radius:99px;background:rgba(0,0,0,.6);color:var(--fg)}
 .ct{margin:11px 4px 0;font-weight:600;font-size:16px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
 .cd{margin:3px 4px 0;color:var(--muted);font-size:14px}
 .empty{grid-column:1/-1;color:var(--muted);padding:30px 0}
@@ -83,9 +84,9 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid va
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;max-height:92dvh;overflow-y:auto;background:var(--surface);border-radius:28px 28px 0 0;
   padding:22px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
 .sheet .in{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-.sheet h3{font-family:var(--display);font-weight:600;font-size:19px;margin:0}
+.sheet h3{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.02em;margin:0}
 .f{display:flex;flex-direction:column;gap:6px}
-.f label,.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.f label,.lbl{font-size:13px;letter-spacing:.02em;color:var(--muted);font-weight:500}
 .f input[type=text],.f input[type=date]{height:48px;border-radius:14px;background:var(--surface-2);border:0;color:var(--fg);padding:0 14px;font:inherit;font-size:16px;width:100%}
 .row{display:flex;gap:12px;align-items:stretch}
 .prev{width:96px;height:96px;flex:none;border-radius:22px;overflow:hidden;position:relative;background:var(--surface-2)}
@@ -93,7 +94,7 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid va
 .pick{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;justify-content:center}
 .btn{display:flex;align-items:center;justify-content:center;height:46px;border-radius:14px;background:var(--surface-2);font-weight:500;font-size:14px;padding:0 12px;cursor:pointer;text-align:center}
 .fname{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.primary{height:52px;border-radius:16px;background:var(--fg);color:#000;font-weight:600;font-size:16px}
+.primary{height:52px;border-radius:14px;background:var(--accent);color:#fff;font-weight:600;font-size:17px}
 .primary[disabled]{opacity:.4}
 .ghost{height:44px;color:var(--muted)}
 .err{color:var(--danger);font-size:13px;min-height:1em}
@@ -103,26 +104,12 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <linearGradient id="tile3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1d23"/><stop offset="1" stop-color="#07070a"/></linearGradient>
-    <linearGradient id="chD" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="80">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#9ca5b2"/><stop offset=".5" stop-color="#f1f5fa"/><stop offset=".56" stop-color="#4a515c"/><stop offset="1" stop-color="#d3dae4"/>
-    </linearGradient>
-    <linearGradient id="chB" gradientUnits="userSpaceOnUse" x1="0" y1="6" x2="0" y2="94">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#86bdea"/><stop offset=".5" stop-color="#eaf5ff"/><stop offset=".56" stop-color="#2f5f93"/><stop offset="1" stop-color="#c4e3ff"/>
-    </linearGradient>
-    <clipPath id="dclip"><path clip-rule="evenodd" d="M23.5 18.5H57.86L78.5 39.14V60.86L57.86 81.5H23.5ZM32.5 27.5H54.14L69.5 42.86V57.14L54.14 72.5H32.5Z"/></clipPath>
-    <linearGradient id="chS" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#b3bbc8"/><stop offset=".5" stop-color="#f4f7fb"/><stop offset=".56" stop-color="#555d69"/><stop offset="1" stop-color="#e0e6ee"/>
-    </linearGradient>
-    <linearGradient id="bolt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9dd2ff"/><stop offset="1" stop-color="#bba2ff"/></linearGradient>
     <symbol id="logo" viewBox="0 0 100 100">
-      <g transform="translate(7 0) skewX(-8)">
-        <g clip-path="url(#dclip)" fill="#f5f5f7">
-          <rect x="15" y="18.5" width="70" height="10.2"/><rect x="15" y="31.7" width="70" height="10.2"/><rect x="15" y="44.9" width="70" height="10.2"/><rect x="15" y="58.1" width="70" height="10.2"/><rect x="15" y="71.3" width="70" height="10.2"/>
-        </g>
-      </g>
-      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="#000" stroke="#000" stroke-width="7" stroke-linejoin="miter"/>
-      <path d="M62 8 38 52h12l-6 40 28-46H55z" fill="url(#bolt)"/>
+      <mask id="lcut" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+        <rect width="100" height="100" fill="#fff"/>
+        <polyline points="59,4 43,47 57,47 41,96" fill="none" stroke="#000" stroke-width="6" stroke-linejoin="round"/>
+      </mask>
+      <path mask="url(#lcut)" fill="#f5f5f7" d="M29 17H47A33 33 0 0 1 47 83H29Q21 83 21 75V25Q21 17 29 17Z"/>
     </symbol>
   </defs>
 </svg>
@@ -137,6 +124,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   <button class="addrow" id="add">
     <span class="plus"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
     <span><b>Adicionar DREAMS</b><small>Envie o PDF de um projeto</small></span>
+    <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
   </button>
 
   <div class="head"><h2>DREAMS adicionados</h2><span id="count">0</span></div>
