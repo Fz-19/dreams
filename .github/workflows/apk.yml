@@ -23,7 +23,7 @@ jobs:
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: 8.7 }
-      - run: gradle assembleDebug --no-daemon --stacktrace
+      - run: gradle assembleDebug -Pvcode=${{ github.run_number }} --no-daemon --stacktrace
       - name: Publicar APK na aba Releases
         env:
           GH_TOKEN: ${{ github.token }}
