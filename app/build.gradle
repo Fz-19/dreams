@@ -1,0 +1,22 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'br.com.dreams'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'br.com.fz19.dreams'
+        minSdk 29
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+    signingConfigs {
+        debug {
+            storeFile file('dreams.keystore')
+            storePassword 'dreams-app-2026'
+            keyAlias 'dreams'
+            keyPassword 'dreams-app-2026'
+        }
+    }
+    buildTypes { release { minifyEnabled false } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}

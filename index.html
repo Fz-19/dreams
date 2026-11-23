@@ -326,6 +326,13 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   $('#q').addEventListener('input',function(e){query=e.target.value;render()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!$('#sheet').hidden)closeSheet();else if(!$('#viewer').hidden)closeViewer()}});
 
+  /* botão Voltar do Android: fecha janela aberta antes de sair */
+  window.dreamsBack=function(){
+    if(!$('#sheet').hidden){closeSheet();return true}
+    if(!$('#viewer').hidden){closeViewer();return true}
+    return false;
+  };
+
   function seeded(){try{return localStorage.getItem('dreams-seeded')==='1'}catch(e){return false}}
   DB.open().then(function(){return DB.all()}).then(function(all){
     items=all;

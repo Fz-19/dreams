@@ -1,0 +1,5 @@
+build/
+.gradle/
+local.properties
+app/src/main/assets/pdf.min.js
+app/src/main/assets/pdf.worker.min.js
