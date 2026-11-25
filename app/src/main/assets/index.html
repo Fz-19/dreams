@@ -98,11 +98,16 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <symbol id="logo" viewBox="0 0 100 100">
-      <mask id="lcut" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
-        <rect width="100" height="100" fill="#fff"/>
-        <polyline points="59,4 43,47 57,47 41,96" fill="none" stroke="#000" stroke-width="6" stroke-linejoin="round"/>
+      <mask id="lcut" maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120">
+        <rect x="-10" y="-10" width="120" height="120" fill="#fff"/>
+        <polyline points="61,-4 46,46 57,54 41,104" fill="none" stroke="#000" stroke-width="3" stroke-linejoin="miter"/>
       </mask>
-      <path mask="url(#lcut)" fill="#f5f5f7" d="M29 17H47A33 33 0 0 1 47 83H29Q21 83 21 75V25Q21 17 29 17Z"/>
+      <clipPath id="lhalf"><polygon points="-20,-20 61,-20 61,0 46,46 57,54 41,100 41,120 -20,120"/></clipPath>
+      <clipPath id="rhalf"><polygon points="61,-20 120,-20 120,120 41,120 41,100 57,54 46,46 61,0"/></clipPath>
+      <g mask="url(#lcut)" fill="#f5f5f7">
+        <g transform="translate(-1.8 2.4)" clip-path="url(#lhalf)"><path d="M29 17H47A33 33 0 0 1 47 83H29Q21 83 21 75V25Q21 17 29 17Z"/></g>
+        <g transform="translate(1.8 -2.4)" clip-path="url(#rhalf)"><path d="M29 17H47A33 33 0 0 1 47 83H29Q21 83 21 75V25Q21 17 29 17Z"/></g>
+      </g>
     </symbol>
   </defs>
 </svg>
