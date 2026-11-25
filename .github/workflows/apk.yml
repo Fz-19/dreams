@@ -15,10 +15,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
-      - name: Baixar o leitor de PDF para dentro do app (funciona offline)
+      - name: Baixar leitor de PDF e visualizador 3D para dentro do app (funciona offline)
         run: |
           curl -fL -o app/src/main/assets/pdf.min.js https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js
           curl -fL -o app/src/main/assets/pdf.worker.min.js https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js
+          curl -fL -o app/src/main/assets/model-viewer.min.js https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js
       - name: Aceitar licenças do Android SDK (o SDK já vem no servidor)
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
       - uses: gradle/actions/setup-gradle@v4
