@@ -31,3 +31,12 @@ Se desinstalar o app ou limpar os dados dele, os PDFs somem. Guarde os originais
 
 ## Versão web (opcional)
 https://fz-19.github.io/dreams/ abre o mesmo app no navegador.
+
+## Novidades (v2)
+- Abertura animada profissional (logo se une, raio brilha, voa para o topo). Toque para pular.
+- PDF em alta qualidade (até 3x a resolução da tela). Toque duplo = zoom.
+- Apresentação HTML com motion por DREAMS (aba "Apresentação", botão de tela cheia).
+- Toque longo no card: Abrir / Editar / Excluir. Arraste a folha para baixo para fechar.
+- Vibração suave nos toques (APK).
+- Compartilhar um PDF de outro app > DREAMS abre o cadastro já com o arquivo (APK).
+- Copiar prompt agora tem 3 abas: PDF, Apresentação e Objeto 3D.

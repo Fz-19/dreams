@@ -2,9 +2,14 @@ package br.com.dreams;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
+import android.view.HapticFeedbackConstants;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -23,6 +28,45 @@ public class MainActivity extends Activity {
     private static final int REQ_FILE = 11;
     private WebView web;
     private ValueCallback<Uri[]> fileCallback;
+    private Uri sharedUri;
+    private String sharedName;
+
+    /** Ponte JS -> Android: vibração fina e PDF recebido de outros apps */
+    public class Bridge {
+        @JavascriptInterface public void haptic(String kind) {
+            final int c;
+            if ("ok".equals(kind) && Build.VERSION.SDK_INT >= 30) c = HapticFeedbackConstants.CONFIRM;
+            else if ("err".equals(kind) && Build.VERSION.SDK_INT >= 30) c = HapticFeedbackConstants.REJECT;
+            else if ("heavy".equals(kind)) c = HapticFeedbackConstants.LONG_PRESS;
+            else c = HapticFeedbackConstants.CLOCK_TICK;
+            web.post(() -> web.performHapticFeedback(c));
+        }
+        @JavascriptInterface public String sharedName() { return sharedName == null ? "" : sharedName; }
+        @JavascriptInterface public void clearShared() { sharedUri = null; sharedName = null; }
+    }
+
+    private void handleIntent(Intent i) {
+        if (i == null) return;
+        Uri u = null;
+        if (Intent.ACTION_SEND.equals(i.getAction())) u = i.getParcelableExtra(Intent.EXTRA_STREAM);
+        else if (Intent.ACTION_VIEW.equals(i.getAction())) u = i.getData();
+        if (u == null) return;
+        String n = "documento.pdf";
+        try (Cursor c = getContentResolver().query(u, null, null, null, null)) {
+            if (c != null && c.moveToFirst()) {
+                int ix = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (ix >= 0 && c.getString(ix) != null) n = c.getString(ix);
+            }
+        } catch (Exception ignore) {}
+        sharedUri = u; sharedName = n;
+    }
+
+    @Override
+    protected void onNewIntent(Intent i) {
+        super.onNewIntent(i);
+        handleIntent(i);
+        if (web != null) web.evaluateJavascript("window.dreamsShared&&window.dreamsShared()", null);
+    }
 
     @Override
     protected void onCreate(Bundle b) {
@@ -30,6 +74,8 @@ public class MainActivity extends Activity {
         web = new WebView(this);
         web.setBackgroundColor(Color.BLACK);
         setContentView(web);
+        web.addJavascriptInterface(new Bridge(), "AndroidApp");
+        handleIntent(getIntent());
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);          // IndexedDB / localStorage (onde ficam os PDFs)
@@ -42,10 +88,22 @@ public class MainActivity extends Activity {
         // os arquivos do app (pasta assets) são servidos em https para o armazenamento do navegador funcionar
         web.setWebViewClient(new WebViewClient() {
             @Override
+            public void onPageFinished(WebView v, String url) {
+                v.evaluateJavascript("window.dreamsShared&&window.dreamsShared()", null);
+            }
+
+            @Override
             public WebResourceResponse shouldInterceptRequest(WebView v, WebResourceRequest r) {
                 Uri u = r.getUrl();
                 if (!HOST.equals(u.getHost())) return null;
                 String p = u.getPath();
+                if ("/__shared.pdf".equals(p) && sharedUri != null) {
+                    try {
+                        return new WebResourceResponse("application/pdf", null, getContentResolver().openInputStream(sharedUri));
+                    } catch (Exception e) {
+                        return new WebResourceResponse("text/plain", "utf-8", 404, "Not Found", null, new ByteArrayInputStream(new byte[0]));
+                    }
+                }
                 if (p == null || p.equals("/")) p = "/index.html";
                 try {
                     InputStream in = getAssets().open(p.substring(1));

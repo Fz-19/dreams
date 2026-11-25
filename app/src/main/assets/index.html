@@ -1,10 +1,4 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<style>:root{padding-top:env(safe-area-inset-top,0px)}body{margin:0}</style>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#000000"><style>:root{padding-top:env(safe-area-inset-top,0px)}body{margin:0}</style>
 <title>DREAMS</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -110,18 +104,62 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 .shint button{pointer-events:auto;height:34px;padding:0 14px;border-radius:99px;background:var(--surface-2);font-size:13px;font-weight:600}
 .tag3d{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:99px;background:rgba(0,0,0,.6);color:var(--fg)}
 .ghost.sm{height:36px;font-size:14px;color:var(--danger)}
-/* abertura */
-.splash{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;animation:spOut .55s ease 1.9s forwards}
-.sp-glow{position:absolute;width:340px;height:340px;max-width:90vw;max-height:90vw;border-radius:50%;background:radial-gradient(circle,rgba(10,132,255,.38),transparent 65%);opacity:0;animation:spGlow 1.4s ease .35s forwards}
-.sp-logo{position:relative;width:132px;height:132px;display:block;opacity:0;transform:scale(.86);animation:spLogo .9s cubic-bezier(.2,.8,.2,1) .1s forwards}
-.sp-word{position:relative;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.42em;padding-left:.42em;color:var(--fg);opacity:0;transform:translateY(6px);animation:spWord .7s ease .9s forwards}
-.wrap{animation:wrapIn .7s ease 2s both}
-@keyframes spLogo{to{opacity:1;transform:scale(1)}}
-@keyframes spGlow{0%{opacity:0;transform:scale(.6)}40%{opacity:1}100%{opacity:0;transform:scale(1.25)}}
-@keyframes spWord{to{opacity:1;transform:none}}
-@keyframes spOut{to{opacity:0;visibility:hidden}}
-@keyframes wrapIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.splash{animation:spOut .3s ease .4s forwards}.sp-logo,.sp-word{animation:none;opacity:1;transform:none}.sp-glow{display:none}.wrap{animation:none}}
+/* ===== abertura (motion) ===== */
+body.intro{overflow:hidden}
+body.intro .wrap{opacity:0}
+body.intro .brand svg{opacity:0}
+body.intro.reveal .wrap{opacity:1;transition:opacity .6s ease .15s}
+.splash{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.sp-flash{position:absolute;inset:0;background:radial-gradient(60% 42% at 50% 44%,rgba(190,225,255,.6),rgba(10,132,255,.14) 55%,transparent 78%);opacity:0;animation:spFlash .75s ease calc(.95s*var(--k,1)) both}
+.sp-stage{position:relative;width:176px;height:176px;z-index:2}
+.sp-glow{position:absolute;left:50%;top:50%;width:480px;height:480px;margin:-240px 0 0 -240px;border-radius:50%;background:radial-gradient(circle,rgba(10,132,255,.32),transparent 62%);opacity:0;animation:spGlow 2.4s ease calc(.2s*var(--k,1)) both}
+.sp-inner{position:absolute;inset:0;animation:spImpact .55s cubic-bezier(.2,.9,.3,1) calc(.95s*var(--k,1)) both}
+.sp-half{position:absolute;inset:0;background-size:contain;background-position:center;background-repeat:no-repeat;opacity:0;will-change:transform,opacity}
+.sp-half.l{clip-path:polygon(-57.55% -17.09%,64.67% -17.09%,43.21% 40.46%,58.50% 51.09%,24.98% 134.85%,-57.55% 134.85%);animation:spL calc(.8s*var(--k,1)) cubic-bezier(.16,1,.3,1) calc(.3s*var(--k,1)) both}
+.sp-half.r{clip-path:polygon(64.67% -17.09%,151.38% -17.09%,151.38% 134.85%,24.98% 134.85%,58.50% 51.09%,43.21% 40.46%);animation:spR calc(.8s*var(--k,1)) cubic-bezier(.16,1,.3,1) calc(.3s*var(--k,1)) both}
+.sp-bolt{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0;filter:drop-shadow(0 0 5px #0a84ff) drop-shadow(0 0 16px #0a84ff);animation:spBolt .65s linear calc(.92s*var(--k,1)) both}
+.sp-bolt path{fill:none;stroke:#e2f1ff;stroke-width:15;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:spDraw calc(.24s*var(--k,1)) cubic-bezier(.5,0,.8,.4) calc(.92s*var(--k,1)) forwards}
+.sp-shine{position:absolute;inset:0;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%) 130% 0/260% 100% no-repeat;animation:spShine calc(.95s*var(--k,1)) cubic-bezier(.4,0,.2,1) calc(1.3s*var(--k,1)) both}
+.sp-word{position:relative;display:flex;gap:.46em;margin-top:38px;font-family:var(--display);font-weight:700;font-size:15px;color:var(--fg)}
+.sp-word span{display:inline-block;opacity:0;transform:translateY(16px);filter:blur(8px);animation:spLetter .75s cubic-bezier(.2,.8,.2,1) calc((1.4s + var(--i)*.07s)*var(--k,1)) forwards}
+.sp-tag{position:relative;margin-top:14px;font-size:13px;color:var(--muted);opacity:0;animation:spFade .8s ease calc(2s*var(--k,1)) forwards}
+@keyframes spL{from{opacity:0;transform:translate(-38%,-6%) rotate(-10deg) scale(1.1);filter:blur(12px)}55%{opacity:1}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes spR{from{opacity:0;transform:translate(38%,6%) rotate(10deg) scale(1.1);filter:blur(12px)}55%{opacity:1}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes spImpact{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes spFlash{0%{opacity:0}16%{opacity:1}100%{opacity:0}}
+@keyframes spGlow{0%{opacity:0;transform:scale(.7)}45%{opacity:1}100%{opacity:.6;transform:scale(1.1)}}
+@keyframes spDraw{to{stroke-dashoffset:0}}
+@keyframes spBolt{0%{opacity:0}8%{opacity:1}45%{opacity:1}100%{opacity:0}}
+@keyframes spShine{to{background-position:-30% 0}}
+@keyframes spLetter{to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes spFade{to{opacity:1}}
+/* ===== toques e transições ===== */
+.pill,.btn,.primary,.addrow,.icobtn,.fab,.ghost{transition:transform .15s ease,background .2s ease}
+.pill:active,.btn:active,.primary:active,.addrow:active,.icobtn:active,.ghost:active{transform:scale(.96)}
+.card{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.card.pop{animation:cardIn .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--idelay,0s) + var(--n,0)*45ms)}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.97)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes sheetIn{from{transform:translateY(70px);opacity:0}}
+@keyframes vIn{from{transform:translateY(32px);opacity:0}}
+.back:not([hidden]){animation:fadeIn .25s ease}
+.sheet:not([hidden]){animation:sheetIn .34s cubic-bezier(.2,.8,.2,1)}
+.viewer:not([hidden]){animation:vIn .34s cubic-bezier(.2,.8,.2,1)}
+.pages:not([hidden]){animation:fadeIn .25s ease}
+.stage>*{animation:fadeIn .35s ease}
+.sheet{padding-top:36px}
+.grab{position:absolute;top:0;left:0;right:0;height:36px;touch-action:none;cursor:grab}
+.grab::after{content:"";position:absolute;left:50%;top:11px;width:38px;height:5px;margin-left:-19px;border-radius:3px;background:#3a3a3c}
+.qdel{color:var(--danger)}
+.tagr{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+.tagr span{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:99px;background:rgba(0,0,0,.6);color:var(--fg)}
+.fs{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));z-index:3;width:40px;height:40px;border-radius:50%;background:rgba(28,28,30,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:grid;place-items:center}
+.fs svg{width:20px;height:20px;stroke:var(--fg);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.viewer.imm .vbar{display:none}
+.viewer.imm .stage{top:0!important}
+.viewer.imm .fs{top:calc(10px + env(safe-area-inset-top,0px))!important}
+.pages.z{overflow-x:auto;align-items:flex-start;max-width:none}
+.pages canvas{max-width:none}
 /* prompt */
 .addrow.alt{margin-top:12px;padding:16px 20px;border-radius:24px}
 .plus.alt{width:44px;height:44px;background:var(--surface-2)}
@@ -138,7 +176,57 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   </defs>
 </svg>
 
-<div class="splash" id="splash" aria-hidden="true"><div class="sp-glow"></div><svg class="sp-logo"><use href="#logo"/></svg><div class="sp-word">DREAMS</div></div>
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="sp-flash"></div>
+  <div class="sp-stage" id="spStage">
+    <div class="sp-glow"></div>
+    <div class="sp-inner">
+      <div class="sp-half l"></div><div class="sp-half r"></div>
+      <svg class="sp-bolt" viewBox="0 0 1053 1053" aria-hidden="true"><path pathLength="1" d="M599 40 L455 426 L616 538 L426 1014"/></svg>
+      <div class="sp-shine"></div>
+    </div>
+  </div>
+  <div class="sp-word" id="spWord"><span style="--i:0">D</span><span style="--i:1">R</span><span style="--i:2">E</span><span style="--i:3">A</span><span style="--i:4">M</span><span style="--i:5">S</span></div>
+  <div class="sp-tag" id="spTag">Seus sonhos, em ordem.</div>
+</div>
+<script>
+(function(){
+  var sp=document.getElementById('splash');if(!sp)return;
+  var de=document.documentElement,body=document.body,done=false,t;
+  function rm(){if(sp.parentNode)sp.parentNode.removeChild(sp);body.classList.remove('intro','reveal');de.style.removeProperty('--idelay')}
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){rm();return}
+  var seen=false;try{seen=localStorage.getItem('dreams-intro')==='1'}catch(e){}
+  var k=seen?0.55:1;
+  sp.style.setProperty('--k',k);de.style.setProperty('--idelay',(2.9*k)+'s');
+  try{
+    var u='url("'+document.querySelector('#logo image').getAttribute('href')+'")';
+    sp.style.setProperty('--logo',u);
+    Array.prototype.forEach.call(sp.querySelectorAll('.sp-half'),function(h){h.style.backgroundImage=u});
+  }catch(e){rm();return}
+  body.classList.add('intro');
+  function hap(x){try{if(window.AndroidApp&&AndroidApp.haptic)AndroidApp.haptic(x)}catch(e){}}
+  setTimeout(function(){hap('impact')},980*k);
+  function exit(){
+    if(done)return;done=true;clearTimeout(t);
+    var st=document.getElementById('spStage'),tg=document.querySelector('.brand svg'),d=Math.round(520*Math.max(k,.75));
+    try{
+      var a=st.getBoundingClientRect(),b=tg.getBoundingClientRect();
+      var sc=b.width/a.width,dx=b.left+b.width/2-(a.left+a.width/2),dy=b.top+b.height/2-(a.top+a.height/2);
+      st.animate([{transform:'translate(0px,0px) scale(1)'},{transform:'translate('+dx+'px,'+dy+'px) scale('+sc+')'}],{duration:d+180,easing:'cubic-bezier(.65,0,.2,1)',fill:'forwards'});
+      ['spWord','spTag'].forEach(function(id){document.getElementById(id).animate([{opacity:1},{opacity:0}],{duration:240,fill:'forwards'})});
+      Array.prototype.forEach.call(sp.querySelectorAll('.sp-glow,.sp-flash'),function(el){el.animate([{opacity:1},{opacity:0}],{duration:300,fill:'forwards'})});
+      sp.animate([{backgroundColor:'rgb(0,0,0)'},{backgroundColor:'rgba(0,0,0,0)'}],{duration:d,delay:140,fill:'forwards',easing:'ease'});
+    }catch(e){}
+    body.classList.add('reveal');
+    setTimeout(rm,d+420);
+    try{localStorage.setItem('dreams-intro','1')}catch(e){}
+  }
+  t=setTimeout(exit,2800*k);
+  sp.addEventListener('click',exit);
+  setTimeout(rm,9000);
+})();
+</script>
 
 <div class="wrap">
   <header class="top">
@@ -172,10 +260,11 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   </div>
   <div class="pages" id="pages"></div>
   <div class="stage" id="stage" hidden></div>
+  <button class="fs" id="fs" type="button" hidden aria-label="Tela cheia"></button>
 </div>
 
 <div class="back" id="back" hidden></div>
-<div class="sheet" id="sheet" hidden role="dialog" aria-label="DREAMS">
+<div class="sheet" id="sheet" hidden role="dialog" aria-label="DREAMS"><div class="grab" aria-hidden="true"></div>
   <div class="in">
     <h3 id="sheetTitle">Novo DREAMS</h3>
     <div class="f"><label for="fTitle">Nome do projeto</label><input id="fTitle" type="text" placeholder="Ex.: Casa no lago" autocomplete="off"></div>
@@ -199,16 +288,31 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
       <div class="fname" id="n3d"></div>
       <button type="button" class="ghost sm" id="rm3d" hidden>Remover 3D</button>
     </div>
+    <div class="f"><span class="lbl">Apresentação em HTML (opcional)</span>
+      <label class="btn" for="fPres" id="bPres">Escolher página .html</label><input id="fPres" type="file" accept=".html,.htm,text/html">
+      <div class="fname" id="nPres"></div>
+      <button type="button" class="ghost sm" id="rmPres" hidden>Remover apresentação</button>
+    </div>
     <div class="err" id="err" role="alert"></div>
     <button class="primary" id="save">Salvar</button>
     <button class="ghost" id="cancel">Cancelar</button>
   </div>
 </div>
 
-<div class="sheet" id="psheet" hidden role="dialog" aria-label="Prompt para a IA">
+<div class="sheet" id="qsheet" hidden role="dialog" aria-label="Ações do sonho"><div class="grab" aria-hidden="true"></div>
+  <div class="in">
+    <h3 id="qtitle"></h3>
+    <button class="btn" id="qopen" type="button">Abrir</button>
+    <button class="btn" id="qedit" type="button">Editar</button>
+    <button class="btn qdel" id="qdel" type="button">Excluir</button>
+    <button class="ghost" id="qclose" type="button">Fechar</button>
+  </div>
+</div>
+
+<div class="sheet" id="psheet" hidden role="dialog" aria-label="Prompt para a IA"><div class="grab" aria-hidden="true"></div>
   <div class="in">
     <h3>Prompt para a IA</h3>
-    <div class="seg" id="pseg"><button type="button" data-p="pdf">PDF do sonho</button><button type="button" data-p="d3">Objeto 3D</button></div>
+    <div class="seg" id="pseg"><button type="button" data-p="pdf">PDF do sonho</button><button type="button" data-p="pres">Apresentação</button><button type="button" data-p="d3">Objeto 3D</button></div>
     <p class="phelp" id="phelp"></p>
     <textarea id="ptext" class="ptext" readonly aria-label="Texto do prompt"></textarea>
     <button class="primary" id="pcopy" type="button">Copiar prompt</button>
@@ -221,7 +325,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 (function(){
   var $=function(s){return document.querySelector(s)};
   var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
-  var items=[],urls=[],query='',current=null,editing=null,pend={pdf:null,cover:null,userCover:false,m3d:null,rm3d:false,kind:'glb'},token=0;
+  var items=[],urls=[],query='',current=null,editing=null,pend={pdf:null,cover:null,userCover:false,m3d:null,rm3d:false,present:null,rmPres:false,kind:'glb'},token=0;
 
   if(window.pdfjsLib){try{pdfjsLib.GlobalWorkerOptions.workerSrc='pdf.worker.min.js'}catch(e){}}
 
@@ -259,24 +363,25 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     $('#count').textContent=String(items.length);
     if(!list.length){$('#list').innerHTML='<p class="empty">'+(items.length?'Nada encontrado.':'Nenhum DREAMS ainda. Toque em Adicionar DREAMS.')+'</p>';return}
     var yr=new Date().getFullYear();
-    $('#list').innerHTML=list.map(function(d){
+    var pop=firstRender;firstRender=false;
+    $('#list').innerHTML=list.map(function(d,ix){
       var dt=parse(d.date),fmt=dt.toLocaleDateString('pt-BR',dt.getFullYear()!==yr?{day:'numeric',month:'short',year:'numeric'}:{day:'numeric',month:'short'});
-      return '<button class="card" data-id="'+d.id+'"><div class="cover">'+coverHTML(d)+(d.example?'<span class="tag">EXEMPLO</span>':'')+(d.m3d?'<span class="tag3d">3D</span>':'')+'</div>'+
+      return '<button class="card'+(pop?' pop':'')+'" style="--n:'+ix+'" data-id="'+d.id+'"><div class="cover">'+coverHTML(d)+(d.example?'<span class="tag">EXEMPLO</span>':'')+((d.m3d||d.present)?'<span class="tagr">'+(d.m3d?'<span>3D</span>':'')+(d.present?'<span>▶</span>':'')+'</span>':'')+'</div>'+
         '<div class="ct">'+esc(d.title)+'</div><div class="cd">'+fmt+'</div></button>';
     }).join('');
   }
 
   function squareBlob(src,sw,sh,top){
-    var size=Math.min(sw,sh),c=document.createElement('canvas');c.width=c.height=Math.min(size,900);
+    var size=Math.min(sw,sh),c=document.createElement('canvas');c.width=c.height=Math.min(size,1080);
     c.getContext('2d').drawImage(src,(sw-size)/2,top?0:(sh-size)/2,size,size,0,0,c.width,c.height);
-    return new Promise(function(res){c.toBlob(function(b){res(b)},'image/jpeg',.86)});
+    return new Promise(function(res){c.toBlob(function(b){res(b)},'image/jpeg',.93)});
   }
   function imageCover(file){return createImageBitmap(file).then(function(bmp){return squareBlob(bmp,bmp.width,bmp.height,false)})}
   function pdfCover(file){
     if(!window.pdfjsLib)return Promise.resolve(null);
     return file.arrayBuffer().then(function(buf){return pdfjsLib.getDocument({data:buf}).promise})
       .then(function(doc){return doc.getPage(1)}).then(function(p){
-        var v0=p.getViewport({scale:1}),v=p.getViewport({scale:900/v0.width}),c=document.createElement('canvas');
+        var v0=p.getViewport({scale:1}),v=p.getViewport({scale:1400/v0.width}),c=document.createElement('canvas');
         c.width=v.width;c.height=v.height;
         return p.render({canvasContext:c.getContext('2d'),viewport:v}).promise.then(function(){return squareBlob(c,c.width,c.height,true)});
       }).catch(function(){return null});
@@ -290,23 +395,9 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     if(!d.pdf){box.innerHTML='<div class="note">Este é um exemplo, ainda sem PDF.<br><button class="pill" id="attach">Anexar PDF</button></div>';
       $('#attach').onclick=function(){openSheet(d)};return}
     if(!window.pdfjsLib){box.innerHTML='<div class="note">Não consegui carregar o leitor de PDF. Confira a conexão e abra de novo.</div>';return}
-    box.innerHTML='<div class="note">Abrindo PDF...</div>';
-    d.pdf.arrayBuffer().then(function(buf){return pdfjsLib.getDocument({data:buf}).promise}).then(function(doc){
-      if(my!==token)return;box.innerHTML='';
-      var dpr=Math.min(window.devicePixelRatio||1,2),w=Math.min(box.clientWidth||360,820);
-      var chain=Promise.resolve();
-      for(var i=1;i<=doc.numPages;i++)(function(n){chain=chain.then(function(){
-        if(my!==token)return;
-        return doc.getPage(n).then(function(p){
-          var v0=p.getViewport({scale:1}),v=p.getViewport({scale:(w*dpr)/v0.width}),c=document.createElement('canvas');
-          c.width=v.width;c.height=v.height;box.appendChild(c);
-          return p.render({canvasContext:c.getContext('2d'),viewport:v}).promise;
-        });
-      })})(i);
-      return chain;
-    }).catch(function(){if(my===token)box.innerHTML='<div class="note">Não foi possível abrir este PDF.</div>'});
+    loadPdf(d,my);
   }
-  function closeViewer(){token++;cleanup3d();current=null;$('#viewer').hidden=true;$('#pages').innerHTML='';document.body.style.overflow=''}
+  function closeViewer(){token++;cleanup3d();setImm(false);$('#fs').hidden=true;current=null;$('#viewer').hidden=true;$('#pages').innerHTML='';document.body.style.overflow=''}
 
 
   /* ---------- 3D ---------- */
@@ -335,18 +426,27 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     var st=$('#stage');st.innerHTML='';st.hidden=true;
   }
   function setupTabs(d){
-    var t=$('#vtabs');
-    if(d.m3d){t.hidden=false;t.innerHTML='<button type="button" data-t="pdf">PDF</button><button type="button" data-t="3d">3D</button>'}
-    else{t.hidden=true;t.innerHTML=''}
+    var t=$('#vtabs'),h='';
+    if(d.m3d||d.present){
+      h='<button type="button" data-t="pdf">PDF</button>';
+      if(d.m3d)h+='<button type="button" data-t="3d">3D</button>';
+      if(d.present)h+='<button type="button" data-t="present">Apresentação</button>';
+      t.hidden=false;t.innerHTML=h;
+    }else{t.hidden=true;t.innerHTML=''}
     showTab('pdf');
   }
   function showTab(k){
     Array.prototype.forEach.call($('#vtabs').querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.t===k)});
-    cleanup3d();
-    $('#pages').hidden=(k==='3d');
-    if(k==='3d'&&current&&current.m3d){
-      var st=$('#stage');st.hidden=false;st.style.top=document.querySelector('.vbar').offsetHeight+'px';
-      render3d(current);
+    cleanup3d();setImm(false);
+    $('#pages').hidden=(k!=='pdf');
+    var fs=$('#fs');fs.hidden=true;
+    if(k==='pdf'||!current)return;
+    var st=$('#stage'),h=document.querySelector('.vbar').offsetHeight;
+    st.hidden=false;st.style.top=h+'px';fs.style.top=(h+10)+'px';
+    if(k==='3d'&&current.m3d){render3d(current);fs.hidden=false}
+    else if(k==='present'&&current.present){
+      var mine=t3d,cid=current.id;note(st,'Carregando apresentação...');
+      iframeScene(current.present.file,current.title,st,function(){return mine===t3d&&current&&current.id===cid});fs.hidden=false;
     }
   }
   function note(st,msg){st.innerHTML='<div class="note">'+msg+'</div>'}
@@ -366,14 +466,17 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
         st.innerHTML='';st.appendChild(mv);
       }).catch(function(){if(alive())note(st,'O visualizador 3D não carregou. Confira a conexão e tente de novo.')});
     }else if(m.type==='html'){
-      m.files[0].text().then(function(txt){
-        if(!alive())return;
-        var f=document.createElement('iframe');f.setAttribute('sandbox','allow-scripts');f.title=d.title;f.srcdoc=txt;
-        st.innerHTML='';st.appendChild(f);
-      }).catch(function(){if(alive())note(st,'Não consegui abrir esta página 3D.')});
+      iframeScene(m.files[0],d.title,st,alive);
     }else{
       framesView(d,st,alive);
     }
+  }
+  function iframeScene(file,title,st,alive){
+    file.text().then(function(txt){
+      if(!alive())return;
+      var f=document.createElement('iframe');f.setAttribute('sandbox','allow-scripts');f.title=title;f.srcdoc=txt;
+      st.innerHTML='';st.appendChild(f);
+    }).catch(function(){if(alive())note(st,'Não consegui abrir esta página.')});
   }
   function framesView(d,st,alive){
     var files=m3dFiles(d),n=files.length;
@@ -413,7 +516,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     function next(){
       if(i>=files.length)return Promise.resolve(res);
       return createImageBitmap(files[i]).then(function(bmp){
-        var sc=Math.min(1,720/Math.max(bmp.width,bmp.height)),c=document.createElement('canvas');
+        var mx=files.length<=36?1080:(files.length<=60?900:720),sc=Math.min(1,mx/Math.max(bmp.width,bmp.height)),c=document.createElement('canvas');
         c.width=Math.round(bmp.width*sc);c.height=Math.round(bmp.height*sc);
         c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);bmp.close&&bmp.close();
         return new Promise(function(ok){c.toBlob(function(b){ok(b)},'image/webp',.85)});
@@ -434,12 +537,12 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     $('#n3d').textContent=pend.m3d?pend.m3d.name:(cur?'3D atual mantido: '+editing.m3d.name:'Sem 3D');
     $('#rm3d').hidden=!(pend.m3d||cur);
   }
-  function init3d(d){pend.m3d=null;pend.rm3d=false;setKind(d&&d.m3d?d.m3d.type:'glb')}
+  function init3d(d){pend.m3d=null;pend.rm3d=false;pend.present=null;pend.rmPres=false;setKind(d&&d.m3d?d.m3d.type:'glb');updatePres()}
 
 
   /* ---------- prompt para a IA ---------- */
-  var PROMPTS={pdf:"Você vai criar o documento de um projeto de sonho meu, em PDF, para eu ler no CELULAR dentro do app DREAMS. O app mostra cada página do PDF na largura da tela do celular (cerca de 390 px). Por isso tudo precisa ser pensado para tela pequena, com o celular em pé.\n\nFORMATO (obrigatório)\n- Páginas em pé, tamanho de celular: 390 x 844 px (proporção 9:19,5). Nada de A4 largo, nada de paisagem, nada de layout de computador.\n- Uma única coluna. Sem barra lateral, sem colunas lado a lado, sem tabelas largas, sem grades com mais de 2 itens por linha.\n- Margem interna de 24 px. Nada encostado na borda e nada cortado.\n- Texto grande e legível: corpo de 17 a 18 px, títulos de seção de 26 a 32 px, título principal de 40 a 56 px. Nunca abaixo de 15 px. Parágrafos de no máximo 4 linhas.\n- Tema escuro igual ao do app: fundo #000000, texto #F5F5F7, texto secundário #8E8E93, destaque azul #0A84FF, cartões #101012 com cantos de 20 px. O fundo preto precisa sair em todas as páginas do PDF, sem borda branca (print-color-adjust: exact).\n- Fonte do sistema ou Inter, incorporada ao PDF. Texto selecionável, nunca transformado em imagem.\n- Sem menus, botões, elementos fixos, animações, hover, vídeo, rodapé repetido ou 100vh. Nada que dependa de internet.\n- Nenhum cartão, imagem ou título pode ser cortado entre duas páginas. Evite quebra dentro de cartões e comece uma página nova quando a seção não couber.\n- Imagens na largura total (342 px), com cantos arredondados e comprimidas. PDF final com menos de 15 MB.\n\nPÁGINA 1 = CAPA\nO app recorta um quadrado do TOPO da página 1 (390 x 390 px) e usa como capa do sonho. Nessa área coloque: o nome do sonho bem grande, uma imagem ou ilustração marcante e uma frase curta. Centralizado, com folga das bordas, legível mesmo em tamanho pequeno. O resto da página 1 pode ter o resumo.\n\nCONTEÚDO (adapte ao meu sonho)\n1. Visão: o sonho em 3 linhas, como se já estivesse acontecendo.\n2. Por que isso importa para mim.\n3. Como será: detalhes concretos de lugar, aparência, rotina e sensações.\n4. Plano em etapas curtas, com prazos realistas.\n5. Quanto custa, em resumo simples, e de onde vem o dinheiro.\n6. Os 3 primeiros passos para começar esta semana.\n7. Uma frase final.\nPortuguês do Brasil, tom direto e inspirador, sem enrolação.\n\nSE VOCÊ FOR CRIAR UMA PÁGINA WEB (HTML/React) PARA EXPORTAR EM PDF\n- Use @page { size: 390px 844px; margin: 0 } e largura fixa de 390px. Não crie versão para desktop.\n- html, body { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact }\n- section, .card, img { break-inside: avoid } e use break-before: page entre as seções grandes.\n- Nada de position: fixed ou sticky.\n- Antes de me entregar, confira página por página se está legível no celular e se nada foi cortado.\n\nENTREGA\nMe entregue o arquivo PDF pronto para baixar, com o nome do sonho no nome do arquivo.\n\nMEU SONHO:\n[descreva aqui o seu sonho]",d3:"Crie um objeto 3D que represente o meu sonho, para eu girar com o dedo dentro do app DREAMS, no celular em pé. Entregue em UM destes formatos (use o primeiro que você conseguir):\n\n1) Arquivo .glb (glTF binário), um único arquivo, com texturas embutidas, menos de 15 MB, até 100 mil triângulos, objeto centralizado, apoiado no chão (y = 0), materiais PBR simples.\n\n2) Um único arquivo .html com tudo embutido: three.js incluído dentro do próprio arquivo, sem CDN, sem internet e sem imagem externa. Canvas ocupando 100% da tela, fundo preto ou transparente, rotação automática lenta e controle por toque (arrastar para girar, pinça para zoom). Sem botões, menus nem texto. Pensado para celular em pé.\n\n3) Uma sequência de 36 a 72 imagens PNG do objeto girando 360 graus, com fundo preto ou transparente, sempre o mesmo enquadramento, nomeadas 01.png, 02.png e assim por diante, na ordem.\n\nO objeto deve ser UMA coisa simbólica e fácil de reconhecer, em estilo minimalista e premium (por exemplo uma casa, um carro, um globo, uma bandeira). Use cores que combinem com fundo preto e destaque azul #0A84FF.\n\nMEU SONHO:\n[descreva aqui o seu sonho]"};
-  var PHELP={pdf:'Cole na IA e troque o final pela descrição do seu sonho. Serve para qualquer IA que gere PDF ou página.',d3:'Opcional. Gera um objeto para girar na aba 3D do sonho (.glb, .html ou imagens).'};
+  var PROMPTS={pdf:"PAPEL\nVocê é um diretor de arte e redator sênior, especialista em design mobile e em documentos de visão (vision decks) premium. Vai transformar o meu sonho em um PDF lindo, claro e emocionante, feito para ser lido no celular, em pé, dentro do app DREAMS.\n\nOBJETIVO\nEntregar um PDF com acabamento de estúdio (nível Apple, Nike, Linear), que eu queira abrir toda semana para lembrar por que estou construindo esse sonho.\n\nCOMO O APP EXIBE O PDF (isso define tudo)\n- Cada página é desenhada na largura da tela do celular, cerca de 390 px, e eu rolo na vertical.\n- Página larga (A4, paisagem, desktop) encolhe e o texto fica ilegível. Por isso: PÁGINAS EM PÉ, NO TAMANHO DE UM CELULAR.\n- O app recorta um quadrado de 390 x 390 px do TOPO da página 1 e usa como capa do sonho, nos cards com cantos arredondados.\n\nFORMATO TÉCNICO (obrigatório)\n- Tamanho da página: 390 x 844 px (em pontos: 292,5 x 633 pt). Em CSS: @page { size: 390px 844px; margin: 0 }. Nada de A4, paisagem ou layout de computador.\n- Uma coluna só. Margem interna de 24 px, sem exceção. Nada encostado na borda e nada cortado.\n- Sem barra lateral, sem colunas lado a lado, sem tabelas largas, no máximo 2 itens por linha.\n- Fundo preto em TODAS as páginas, sem borda branca (print-color-adjust: exact).\n- Fontes incorporadas ao PDF (Inter ou fonte do sistema). Texto selecionável, nunca transformado em imagem.\n- Sem menus, botões, elementos fixos, animações, vídeo, rodapé repetido ou 100vh. Nada que dependa de internet.\n- PDF final com menos de 15 MB. Imagens em alta qualidade (no mínimo 1170 px de largura para as de largura total), comprimidas em JPEG/WebP 85%.\n\nSISTEMA DE DESIGN\n- Cores: fundo #000000, texto #F5F5F7, texto secundário #8E8E93, destaque azul #0A84FF, cartões #101012.\n- Tipografia: título principal 48/52 px peso 800, espaçamento -0,03em; títulos de seção 28/32 px peso 700; corpo 17/26 px peso 400; rótulos 14 px em maiúsculas com espaçamento 0,08em. Nada abaixo de 14 px.\n- Espaçamento em múltiplos de 8 (8, 16, 24, 32, 48). Cartões com cantos de 24 px e padding de 20 px, sem bordas pesadas.\n- Imagens na largura total (342 px), cantos de 24 px, proporção 4:5 ou 1:1. Sem texto dentro da imagem, sem marca d'água, sem rostos de pessoas reais.\n- Ícones: traço fino, vetoriais. Nunca emojis.\n- Um único destaque azul por página. Muito espaço em branco (aqui, espaço preto). Contraste forte.\n- Estilo visual das imagens: o mesmo em todas as páginas (fotografia cinematográfica escura OU ilustração 3D minimalista). Escolha um e mantenha.\n\nESTRUTURA (adapte, junte ou divida, de 7 a 10 páginas)\n1. CAPA. O quadrado do topo (390 x 390) funciona sozinho como capa: nome do sonho bem grande, imagem hero marcante e uma frase curta, centralizados e com folga. Abaixo, a visão em uma frase e 3 dados rápidos (prazo, investimento, lugar).\n2. VISÃO. O sonho em 3 linhas, no presente, como se já estivesse acontecendo. E por que isso importa para mim.\n3. COMO SERÁ. Um dia dentro desse sonho, em 4 ou 5 cenas curtas e sensoriais, com imagem.\n4. PLANO. Linha do tempo vertical com 4 a 6 etapas e prazos realistas.\n5. NÚMEROS. Investimento total, custo mensal e de onde vem o dinheiro, em cartões simples.\n6. RISCOS. Os 3 maiores obstáculos e como contornar cada um.\n7. PRIMEIROS PASSOS. 3 ações para esta semana, em formato de checklist.\n8. ENCERRAMENTO. Uma frase forte e um lembrete do porquê.\n\nREDAÇÃO\nPortuguês do Brasil, primeira pessoa, presente. Frases curtas e concretas, com números reais. Sem clichês (jornada, alavancar, sinergia, \"realizar sonhos\"). Cada página com um assunto só e no máximo 60 palavras. Se faltar informação, faça suposições razoáveis e marque como \"(estimativa)\". Não me faça perguntas, entregue.\n\nCONTROLE DE QUALIDADE (faça antes de entregar e corrija o que falhar)\n1. Renderize cada página em 390 px de largura e olhe. Está legível sem zoom?\n2. Nada cortado nas bordas nem no meio de uma página, e nenhuma quebra deixa uma página quase vazia.\n3. Fundo preto em todas as páginas, sem faixa branca.\n4. O topo quadrado da página 1 funciona como capa.\n5. Texto selecionável e fontes incorporadas.\n6. Imagens nítidas, sem pixelização.\n\nSE VOCÊ GERA SITE (HTML/React) PARA EXPORTAR EM PDF\n- @page { size: 390px 844px; margin: 0 } e largura fixa de 390px. Não crie versão desktop.\n- html, body { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact }\n- section, .card, img { break-inside: avoid } e break-before: page entre as seções grandes.\n- Nada de position: fixed ou sticky.\n\nENTREGA\nO arquivo PDF pronto para baixar, com o nome do sonho no nome do arquivo. Depois, em uma linha, diga o estilo visual que escolheu.\n\nMEU SONHO:\n[descreva aqui o seu sonho]",pres:"PAPEL\nVocê é um motion designer e diretor de arte sênior, especialista em experiências mobile (nível Apple, Nike, Stripe). Vai criar uma APRESENTAÇÃO ANIMADA do meu sonho, em um único arquivo HTML, para eu assistir no celular, em pé, dentro do app DREAMS.\n\nCOMO O APP EXIBE (isso define tudo)\n- O arquivo roda dentro de um quadro isolado (sandbox), em tela cheia, no tamanho de um celular em pé (390 x 844 px). O quadro não acessa nada fora dele.\n- A internet não é garantida. Não existe localStorage, cookies, janela nova nem link para fora.\n\nREGRAS TÉCNICAS (obrigatórias)\n- UM único arquivo .html. CSS e JavaScript embutidos. Zero requisições externas: sem CDN, sem Google Fonts, sem imagens por URL. Fontes: pilha do sistema (-apple-system, \"SF Pro Display\", Inter, system-ui). Imagens e ícones: SVG inline ou base64 (cada imagem até 250 KB, otimizada).\n- <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover\">. Use 100dvh (nunca 100vh) e env(safe-area-inset-*).\n- Sem bibliotecas. Se realmente precisar de uma, embuta a versão minificada dentro do arquivo.\n- Animar só transform e opacity (filter com moderação). 60 fps em celular simples. Use CSS animations/transitions, requestAnimationFrame e IntersectionObserver.\n- Respeite prefers-reduced-motion: sem movimento, só um fade curto.\n- Sem alert, confirm, prompt, formulários, vídeo com som ou áudio automático.\n\nFORMATO\n- 6 a 9 cenas em tela cheia, uma por vez, como stories premium.\n- Navegação: toque no lado direito avança, toque no lado esquerdo volta, arrastar para cima, baixo ou os lados também troca de cena. Barra de progresso fina e segmentada no topo. Nenhum outro botão visível.\n- Cena 1 é a capa: título gigante, frase curta, entrada cinematográfica.\n- A última cena fecha com uma frase forte e um botão \"Rever\" que volta ao início. A apresentação não fecha sozinha. Avanço automático opcional a cada 6 s, pausando enquanto eu seguro o dedo.\n\nDIREÇÃO DE ARTE\n- Tema escuro igual ao app: fundo #000, texto #F5F5F7, secundário #8E8E93, destaque azul #0A84FF, cartões #101012. Um destaque por cena.\n- Tipografia: título de 44 a 64 px, peso 800, espaçamento -0,03em; corpo de 18 a 20 px; nada abaixo de 15 px. Margens de 24 px. Um assunto por cena, no máximo 25 palavras.\n- Ilustrações e gráficos vetoriais minimalistas ou gradientes suaves. Nada de clip-art, emoji ou foto genérica.\n\nMOTION (o ponto central)\n- Entrada de cada cena em sequência (stagger de 60 a 90 ms): o texto sobe com fade e um leve blur que se desfaz, os títulos se revelam por máscara, os números contam de 0 até o valor.\n- Fundo vivo e discreto: gradientes lentos, partículas leves ou formas flutuando em paralaxe, em camadas com velocidades diferentes.\n- Transição entre cenas: a atual sai (fade, deslocamento de 24 px e escala 0,98) e a próxima entra com easing cubic-bezier(.2,.8,.2,1), de 500 a 700 ms. Nenhum corte seco.\n- Microinterações: um pulso discreto no lado tocado. A barra de progresso preenche suavemente.\n- Ritmo: faça pausas. Para cada duas cenas calmas, uma cena de impacto (palavra gigante ou número grande).\n\nCONTEÚDO (adapte ao meu sonho)\nVisão, por que importa, como será (cenas sensoriais), plano em etapas (linha do tempo animada), números (investimento e prazos animados), primeiros passos e encerramento. Português do Brasil, primeira pessoa, frases curtas e concretas, sem clichês. Se faltar informação, faça suposições razoáveis e marque como \"(estimativa)\". Não me faça perguntas, entregue.\n\nCONTROLE DE QUALIDADE (faça antes de entregar e corrija o que falhar)\n1. Teste em 390 x 844 e em 360 x 640. Nada cortado ou fora da tela, texto legível sem zoom.\n2. Todas as cenas funcionam por toque e por arrasto, sem teclado.\n3. Sem erros no console e sem nenhuma requisição externa.\n4. Funciona com prefers-reduced-motion.\n5. Arquivo final com menos de 2 MB.\n\nENTREGA\nO arquivo .html pronto para baixar, com o nome do sonho no nome do arquivo.\n\nMEU SONHO:\n[descreva aqui o seu sonho]",d3:"PAPEL\nVocê é um artista 3D e diretor de arte sênior. Vai criar um objeto 3D que simbolize o meu sonho, para eu girar com o dedo dentro do app DREAMS, no celular em pé.\n\nO OBJETO\n- UMA coisa simbólica e fácil de reconhecer (por exemplo uma casa, um carro, um globo, uma bandeira, um barco). Silhueta forte, poucos detalhes, acabamento premium e minimalista.\n- Materiais limpos, com reflexo suave. Paleta que combine com fundo preto e destaque azul #0A84FF. Sem texto no objeto, sem logotipos.\n- Vista bonita de todos os lados, não só de frente.\n\nENTREGA (use o primeiro formato que você conseguir)\n1) Arquivo .glb (glTF binário), um único arquivo, texturas embutidas, menos de 15 MB, até 100 mil triângulos, objeto centralizado e apoiado no chão (y = 0), materiais PBR simples.\n2) Um único arquivo .html com tudo embutido: three.js incluído dentro do próprio arquivo, sem CDN, sem internet e sem imagem externa. Canvas em 100% da tela, fundo preto ou transparente, rotação automática lenta e toque para girar (arrastar) e dar zoom (pinça). Sem botões, menus nem texto. Pensado para celular em pé (390 x 844 px). Use 100dvh.\n3) De 36 a 72 imagens PNG do objeto girando 360 graus, fundo preto ou transparente, sempre o mesmo enquadramento e iluminação, em alta qualidade (1080 px), nomeadas 01.png, 02.png e assim por diante, na ordem.\n\nCONTROLE DE QUALIDADE (faça antes de entregar)\n1. Gire o objeto e confira todos os ângulos: sem buracos, sem partes atravessadas, sem sombras estranhas.\n2. O objeto fica centralizado e inteiro na tela de um celular.\n3. O arquivo abre sem internet.\n\nMEU SONHO:\n[descreva aqui o seu sonho]"};
+  var PHELP={pdf:"Cole na IA e troque o final pela descrição do seu sonho. Gera o PDF em formato de celular, pronto para o app.",pres:"Gera uma apresentação animada em um único arquivo .html. Anexe na seção Apresentação do sonho.",d3:"Opcional. Gera um objeto para girar na aba 3D do sonho (.glb, .html ou imagens)."};
   var pkind='pdf';
   function setP(k){
     pkind=k;
@@ -457,13 +560,97 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     return copyFallback(t);
   }
 
+
+  /* ---------- toques, vibração, painéis, PDF em alta resolução, integrações ---------- */
+  var firstRender=true,lpHit=false;
+  function hap(k){try{if(window.AndroidApp&&AndroidApp.haptic){AndroidApp.haptic(k||'tick')}else if(navigator.vibrate){navigator.vibrate(k==='success'?[10,30,10]:(k==='heavy'||k==='warn')?20:6)}}catch(e){}}
+  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('button,.btn,.card'))hap('tick')},true);
+  var EXPAND='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  var SHRINK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+  function setImm(on){var v=$('#viewer'),b=$('#fs');v.classList.toggle('imm',!!on);b.innerHTML=on?SHRINK:EXPAND;b.setAttribute('aria-label',on?'Sair da tela cheia':'Tela cheia')}
+  function dragSheet(el,close){
+    var g=el.querySelector('.grab');if(!g)return;
+    var sy=0,dy=0,on=false,t0=0;
+    g.addEventListener('pointerdown',function(e){on=true;sy=e.clientY;dy=0;t0=Date.now();el.style.transition='none';try{g.setPointerCapture(e.pointerId)}catch(x){}});
+    g.addEventListener('pointermove',function(e){if(!on)return;dy=Math.max(0,e.clientY-sy);el.style.transform='translateY('+dy+'px)'});
+    var end=function(){
+      if(!on)return;on=false;
+      var v=dy/Math.max(1,Date.now()-t0);
+      el.style.transition='transform .22s cubic-bezier(.2,.8,.2,1)';
+      if(dy>120||v>.6){el.style.transform='translateY(100%)';hap('tick');setTimeout(function(){close();el.style.transform='';el.style.transition=''},200)}
+      else{el.style.transform='';setTimeout(function(){el.style.transition=''},240)}
+    };
+    g.addEventListener('pointerup',end);g.addEventListener('pointercancel',end);
+  }
+  /* menu de toque longo */
+  var qid=null;
+  function openQuick(d){qid=d.id;$('#qtitle').textContent=d.title;$('#qdel').textContent='Excluir';$('#qdel').dataset.arm='';$('#back').hidden=false;$('#qsheet').hidden=false}
+  function qItem(){return items.find(function(x){return x.id===qid})}
+  /* apresentação em HTML */
+  function updatePres(){
+    var cur=editing&&editing.present&&!pend.rmPres;
+    $('#nPres').textContent=pend.present?pend.present.name:(cur?'Apresentação atual mantida: '+editing.present.name:'Sem apresentação');
+    $('#rmPres').hidden=!(pend.present||cur);
+  }
+  /* PDF em alta resolução, com ampliação por duplo toque */
+  var pdfDoc=null,pdfZoom=1,drawTok=0,lastTap=0,lastX=0,lastY=0;
+  function loadPdf(d,my){
+    var box=$('#pages');pdfDoc=null;pdfZoom=1;box.classList.remove('z');
+    box.innerHTML='<div class="note">Abrindo PDF...</div>';
+    d.pdf.arrayBuffer().then(function(buf){return pdfjsLib.getDocument({data:buf}).promise}).then(function(doc){
+      if(my!==token)return;pdfDoc=doc;return drawPdf(my);
+    }).catch(function(){if(my===token)box.innerHTML='<div class="note">Não foi possível abrir este PDF.</div>'});
+  }
+  function drawPdf(my){
+    var doc=pdfDoc,box=$('#pages'),vw=$('#viewer');if(!doc)return Promise.resolve();
+    var dt=++drawTok,ratio=vw.scrollTop/Math.max(1,vw.scrollHeight);
+    box.innerHTML='';
+    var probe=document.createElement('div');probe.style.cssText='width:100%;height:0';box.appendChild(probe);
+    var cw=probe.clientWidth||360;box.removeChild(probe);
+    var cssW=cw*pdfZoom,dpr=Math.min(window.devicePixelRatio||1,3);
+    var jobs=[];for(var i=1;i<=doc.numPages;i++)jobs.push(doc.getPage(i));
+    return Promise.all(jobs).then(function(ps){
+      if(my!==token||dt!==drawTok)return;
+      var q=dpr*1.25,tot=0;
+      ps.forEach(function(p){var v0=p.getViewport({scale:1});tot+=(cssW*q)*(cssW*q*v0.height/v0.width)});
+      if(tot>150e6)q*=Math.sqrt(150e6/tot);
+      var cvs=ps.map(function(p){
+        var v0=p.getViewport({scale:1}),c=document.createElement('canvas');
+        c.style.width=cssW+'px';c.style.height=(cssW*v0.height/v0.width)+'px';box.appendChild(c);return c;
+      });
+      vw.scrollTop=ratio*vw.scrollHeight;
+      if(pdfZoom>1)box.scrollLeft=(box.scrollWidth-box.clientWidth)/2;
+      var chain=Promise.resolve();
+      ps.forEach(function(p,ix){chain=chain.then(function(){
+        if(my!==token||dt!==drawTok)return;
+        var v0=p.getViewport({scale:1}),v=p.getViewport({scale:(cssW*q)/v0.width}),c=cvs[ix];
+        c.width=Math.round(v.width);c.height=Math.round(v.height);
+        return p.render({canvasContext:c.getContext('2d'),viewport:v}).promise;
+      })});
+      return chain;
+    }).catch(function(){});
+  }
+  /* compartilhar PDF de outro app direto para o DREAMS */
+  window.dreamsShared=function(){
+    if(!window.AndroidApp||!AndroidApp.sharedName)return;
+    var name=AndroidApp.sharedName();if(!name)return;
+    fetch('/__shared.pdf').then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){
+      AndroidApp.clearShared();
+      if(!$('#viewer').hidden)closeViewer();
+      openSheet(null);
+      var f=new File([b],name,{type:'application/pdf'});
+      try{var dt=new DataTransfer();dt.items.add(f);$('#fPdf').files=dt.files;$('#fPdf').dispatchEvent(new Event('change'))}
+      catch(e){pend.pdf=f;$('#pdfName').textContent=name;if(!$('#fTitle').value)$('#fTitle').value=name.replace(/\.pdf$/i,'')}
+    }).catch(function(){});
+  };
+
   function setPrev(){
     var p=$('#prev');
     if(pend.cover){var u=URL.createObjectURL(pend.cover);p.innerHTML='<img src="'+u+'" alt="">'}
     else{p.innerHTML=genHTML(editing?editing.id:'novo')}
   }
   function openSheet(d){
-    editing=d||null;pend={pdf:null,cover:d&&d.cover?d.cover:null,userCover:!!(d&&d.cover),m3d:null,rm3d:false,kind:'glb'};
+    editing=d||null;pend={pdf:null,cover:d&&d.cover?d.cover:null,userCover:!!(d&&d.cover),m3d:null,rm3d:false,present:null,rmPres:false,kind:'glb'};
     $('#sheetTitle').textContent=d?'Editar DREAMS':'Novo DREAMS';
     $('#fTitle').value=d?d.title:'';$('#fDate').value=d?d.date:today();
     $('#pdfName').textContent=d&&d.pdf?'PDF atual mantido':'';$('#pdfBtn').textContent=d&&d.pdf?'Trocar PDF':'Escolher PDF';
@@ -471,7 +658,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     $('#fPdf').value='';$('#fCover').value='';setPrev();init3d(d);
     $('#back').hidden=false;$('#sheet').hidden=false;
   }
-  function closeSheet(){$('#back').hidden=true;$('#sheet').hidden=true;$('#psheet').hidden=true;editing=null}
+  function closeSheet(){$('#back').hidden=true;$('#sheet').hidden=true;$('#psheet').hidden=true;$('#qsheet').hidden=true;editing=null}
 
   $('#fPdf').addEventListener('change',function(e){
     var f=e.target.files[0];if(!f)return;pend.pdf=f;$('#pdfName').textContent=f.name;$('#pdfBtn').textContent='Trocar PDF';$('#err').textContent='';
@@ -488,15 +675,16 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
     var title=$('#fTitle').value.trim(),date=$('#fDate').value||today();
     if(!title){$('#err').textContent='Dê um nome ao projeto.';return}
     if(!editing&&!pend.pdf){$('#err').textContent='Escolha o PDF.';return}
-    var o=editing?{id:editing.id,example:editing.example,pdf:editing.pdf,cover:editing.cover,m3d:editing.m3d}:{id:uid()};
+    var o=editing?{id:editing.id,example:editing.example,pdf:editing.pdf,cover:editing.cover,m3d:editing.m3d,present:editing.present}:{id:uid()};
     o.title=title;o.date=date;
     if(pend.pdf){o.pdf=pend.pdf;o.example=false}
     if(pend.cover)o.cover=pend.cover;
     if(pend.m3d)o.m3d=pend.m3d;else if(pend.rm3d)delete o.m3d;
+    if(pend.present)o.present=pend.present;else if(pend.rmPres)delete o.present;
     $('#save').disabled=true;
     DB.put(o).then(function(){
       var i=items.findIndex(function(x){return x.id===o.id});if(i>-1)items[i]=o;else items.push(o);
-      var wasViewing=current&&current.id===o.id;closeSheet();render();
+      var wasViewing=current&&current.id===o.id;closeSheet();render();hap('success');
       if(wasViewing)openViewer(o);
     }).catch(function(){$('#err').textContent='Não foi possível salvar. Os arquivos podem ser grandes demais para o espaço do navegador.'})
       .then(function(){$('#save').disabled=false});
@@ -527,15 +715,48 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   $('#add').onclick=function(){openSheet(null)};
   $('#prompt').onclick=openPrompt;
   $('#pclose').onclick=closeSheet;
+  dragSheet($('#sheet'),closeSheet);dragSheet($('#psheet'),closeSheet);dragSheet($('#qsheet'),closeSheet);
+  $('#fs').onclick=function(){setImm(!$('#viewer').classList.contains('imm'))};
+  setImm(false);
+  $('#pages').addEventListener('pointerup',function(e){
+    if(!pdfDoc)return;
+    var t=Date.now();
+    if(t-lastTap<300&&Math.abs(e.clientX-lastX)<30&&Math.abs(e.clientY-lastY)<30){
+      lastTap=0;pdfZoom=pdfZoom>1?1:2;$('#pages').classList.toggle('z',pdfZoom>1);hap('tick');drawPdf(token);
+    }else{lastTap=t;lastX=e.clientX;lastY=e.clientY}
+  });
+  $('#fPres').addEventListener('change',function(e){
+    var f=e.target.files&&e.target.files[0];if(!f)return;
+    if(!/\.html?$/i.test(f.name)){$('#err').textContent='Use um arquivo .html.';return}
+    $('#err').textContent='';pend.present={name:f.name,file:f};pend.rmPres=false;updatePres();
+  });
+  $('#rmPres').onclick=function(){pend.present=null;pend.rmPres=true;$('#fPres').value='';updatePres()};
+  var lp=null,lpx=0,lpy=0,lpl=$('#list');
+  lpl.addEventListener('pointerdown',function(e){
+    var c=e.target.closest('.card');if(!c)return;
+    lpHit=false;lpx=e.clientX;lpy=e.clientY;clearTimeout(lp);
+    lp=setTimeout(function(){var d=items.find(function(x){return x.id===c.dataset.id});if(d){lpHit=true;hap('heavy');openQuick(d)}},480);
+  });
+  lpl.addEventListener('pointermove',function(e){if(Math.abs(e.clientX-lpx)>10||Math.abs(e.clientY-lpy)>10)clearTimeout(lp)});
+  ['pointerup','pointercancel','pointerleave'].forEach(function(ev){lpl.addEventListener(ev,function(){clearTimeout(lp)})});
+  lpl.addEventListener('contextmenu',function(e){e.preventDefault()});
+  $('#qclose').onclick=closeSheet;
+  $('#qopen').onclick=function(){var d=qItem();closeSheet();if(d)openViewer(d)};
+  $('#qedit').onclick=function(){var d=qItem();closeSheet();if(d)openSheet(d)};
+  $('#qdel').onclick=function(){
+    var b=$('#qdel');
+    if(b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Toque de novo para excluir';hap('warn');return}
+    var id=qid;DB.del(id).then(function(){items=items.filter(function(x){return x.id!==id});closeSheet();render();hap('success')});
+  };
+
   $('#pseg').addEventListener('click',function(e){var b=e.target.closest('button');if(b)setP(b.dataset.p)});
   $('#pcopy').onclick=function(){
     var b=$('#pcopy'),t=PROMPTS[pkind];
-    copyText(t).then(function(){b.textContent='Copiado'},function(){b.textContent='Toque no texto e copie'});
+    copyText(t).then(function(){b.textContent='Copiado';hap('success')},function(){b.textContent='Toque no texto e copie'});
     setTimeout(function(){b.textContent='Copiar prompt'},2200);
   };
-  (function(){var sp=$('#splash');if(!sp)return;var rm=function(){if(sp.parentNode)sp.parentNode.removeChild(sp)};
-    sp.addEventListener('click',function(){sp.style.animation='spOut .25s ease forwards';setTimeout(rm,300)});setTimeout(rm,2700)})();
   $('#list').addEventListener('click',function(e){
+    if(lpHit){lpHit=false;return}
     var c=e.target.closest('.card');if(!c)return;
     var d=items.find(function(x){return x.id===c.dataset.id});if(d)openViewer(d);
   });
@@ -552,7 +773,8 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 
   /* botão Voltar do Android: fecha janela aberta antes de sair */
   window.dreamsBack=function(){
-    if(!$('#sheet').hidden||!$('#psheet').hidden){closeSheet();return true}
+    if($('#viewer').classList.contains('imm')){setImm(false);return true}
+    if(!$('#sheet').hidden||!$('#psheet').hidden||!$('#qsheet').hidden){closeSheet();return true}
     if(!$('#viewer').hidden){closeViewer();return true}
     return false;
   };
@@ -561,6 +783,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   DB.open().then(function(){return DB.all()}).then(function(all){
     items=all;
     render();
+    if(window.dreamsShared)window.dreamsShared();
   });
 })();
 </script>
