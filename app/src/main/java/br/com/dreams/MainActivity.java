@@ -2,12 +2,16 @@ package br.com.dreams;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.util.Base64;
+import java.io.OutputStream;
 import android.view.HapticFeedbackConstants;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -30,6 +34,9 @@ public class MainActivity extends Activity {
     private ValueCallback<Uri[]> fileCallback;
     private Uri sharedUri;
     private String sharedName;
+    private Uri saveUri;
+    private OutputStream saveOut;
+    private boolean failed;
 
     /** Ponte JS -> Android: vibração fina e PDF recebido de outros apps */
     public class Bridge {
@@ -42,6 +49,37 @@ public class MainActivity extends Activity {
             web.post(() -> web.performHapticFeedback(c));
         }
         @JavascriptInterface public String sharedName() { return sharedName == null ? "" : sharedName; }
+        @JavascriptInterface public boolean saveStart(String name, String mime) {
+            try {
+                saveEnd();
+                ContentValues v = new ContentValues();
+                v.put(MediaStore.Downloads.DISPLAY_NAME, name);
+                v.put(MediaStore.Downloads.MIME_TYPE, mime);
+                v.put(MediaStore.Downloads.IS_PENDING, 1);
+                saveUri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, v);
+                if (saveUri == null) return false;
+                saveOut = getContentResolver().openOutputStream(saveUri);
+                return saveOut != null;
+            } catch (Exception e) { saveUri = null; saveOut = null; return false; }
+        }
+        @JavascriptInterface public void saveChunk(String b64) {
+            try { if (saveOut != null) saveOut.write(Base64.decode(b64, Base64.DEFAULT)); } catch (Exception e) { failed = true; }
+        }
+        @JavascriptInterface public boolean saveEnd() {
+            boolean ok = saveOut != null && !failed;
+            try {
+                if (saveOut != null) saveOut.close();
+                if (saveUri != null) {
+                    if (ok) {
+                        ContentValues v = new ContentValues();
+                        v.put(MediaStore.Downloads.IS_PENDING, 0);
+                        getContentResolver().update(saveUri, v, null, null);
+                    } else getContentResolver().delete(saveUri, null, null);
+                }
+            } catch (Exception e) { ok = false; }
+            saveOut = null; saveUri = null; failed = false;
+            return ok;
+        }
         @JavascriptInterface public void clearShared() { sharedUri = null; sharedName = null; }
     }
 

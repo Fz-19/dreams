@@ -40,3 +40,4 @@ https://fz-19.github.io/dreams/ abre o mesmo app no navegador.
 - Vibração suave nos toques (APK).
 - Compartilhar um PDF de outro app > DREAMS abre o cadastro já com o arquivo (APK).
 - Copiar prompt agora tem 3 abas: PDF, Apresentação e Objeto 3D.
+- Botão Baixar: salva o PDF original em Downloads (viewer e toque longo).

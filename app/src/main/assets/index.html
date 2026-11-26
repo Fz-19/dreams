@@ -254,6 +254,7 @@ body.intro.reveal .wrap{opacity:1;transition:opacity .6s ease .15s}
   <div class="vbar">
     <button class="icobtn" id="vclose" aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
     <h2 id="vtitle"></h2>
+    <button class="pill" id="vdl">Baixar</button>
     <button class="pill" id="vedit">Editar</button>
     <button class="pill danger" id="vdel">Excluir</button>
     <div class="vtabs" id="vtabs" hidden></div>
@@ -303,6 +304,7 @@ body.intro.reveal .wrap{opacity:1;transition:opacity .6s ease .15s}
   <div class="in">
     <h3 id="qtitle"></h3>
     <button class="btn" id="qopen" type="button">Abrir</button>
+    <button class="btn" id="qdl" type="button">Baixar PDF</button>
     <button class="btn" id="qedit" type="button">Editar</button>
     <button class="btn qdel" id="qdel" type="button">Excluir</button>
     <button class="ghost" id="qclose" type="button">Fechar</button>
@@ -761,6 +763,28 @@ body.intro.reveal .wrap{opacity:1;transition:opacity .6s ease .15s}
     var d=items.find(function(x){return x.id===c.dataset.id});if(d)openViewer(d);
   });
   $('#vclose').onclick=closeViewer;
+
+  /* baixar o PDF enviado (salva em Downloads no APK; no navegador usa download normal) */
+  function saveBlob(blob,name,btn){
+    var old=btn&&btn.textContent;function say(t){if(!btn)return;btn.textContent=t;setTimeout(function(){btn.textContent=old},1800)}
+    name=(name||'dream').replace(/[\\/:*?"<>|]+/g,'_');if(!/\.pdf$/i.test(name))name+='.pdf';
+    if(window.AndroidApp&&AndroidApp.saveStart){
+      if(!AndroidApp.saveStart(name,blob.type||'application/pdf')){say('Erro ao salvar');hap('err');return}
+      var CH=3*1024*256,pos=0;
+      (function next(){
+        if(pos>=blob.size){var ok=AndroidApp.saveEnd();say(ok?'Salvo em Downloads':'Erro ao salvar');hap(ok?'ok':'err');return}
+        var fr=new FileReader();
+        fr.onload=function(){var r=String(fr.result);AndroidApp.saveChunk(r.slice(r.indexOf(',')+1));pos+=CH;setTimeout(next,0)};
+        fr.readAsDataURL(blob.slice(pos,pos+CH));
+      })();
+      return;
+    }
+    var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u)},4000);say('Baixando...');hap('ok');
+  }
+  function dlItem(d,btn){if(d&&d.pdf)saveBlob(d.pdf,(d.title||'dream'),btn)}
+  $('#vdl').onclick=function(){dlItem(current,this)};
+  $('#qdl').onclick=function(){var d=qItem();dlItem(d,this)};
   $('#vedit').onclick=function(){if(current)openSheet(current)};
   $('#vdel').onclick=function(){
     var b=$('#vdel');
